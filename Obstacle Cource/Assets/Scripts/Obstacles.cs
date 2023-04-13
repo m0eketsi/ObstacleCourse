@@ -8,7 +8,7 @@ public class Obstacles : MonoBehaviour
         if(other.gameObject.CompareTag("Player"))
         {
             gameObject.tag = "Hit";
-            //GetComponent<MeshRenderer>().material.color = Color.red;
+            GetComponent<MeshRenderer>().material.color = Color.red;
         }
     }
 }
