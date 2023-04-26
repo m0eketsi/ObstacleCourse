@@ -4,13 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float _moveSpeed = 10f;
-    [SerializeField] private float _rotateSpeed = 70f;
-    public float sensitivity = 10f;
-    public float maxYAngle = 80f;
-    private Vector2 currentRotation;
     public GameObject playerCam;
     public GameObject gameWonScreen;
+    public Transform crosshair;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,31 +16,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Movement();
-        FreeCamera();
+        aiming();
     }
-
-    void Movement()
+    public void aiming()
     {
-        float xValue = Input.GetAxis("Horizontal") * _rotateSpeed * Time.deltaTime;
-        float zValue = Input.GetAxis("Vertical") * _moveSpeed * Time.deltaTime;
-
-        transform.Translate(0f, 0f, zValue);
-        transform.Rotate(0f, xValue, 0f);
-    }
-    void FreeCamera()
-    {
-        currentRotation.x += Input.GetAxis("Mouse X") * sensitivity;
-        currentRotation.y -= Input.GetAxis("Mouse Y") * sensitivity;
-        currentRotation.x = Mathf.Repeat(currentRotation.x, 360);
-        currentRotation.y = Mathf.Clamp(currentRotation.y, -maxYAngle, maxYAngle);
-        playerCam.transform.rotation = Quaternion.Euler(currentRotation.y,currentRotation.x,0);
-    }
-    void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.CompareTag("Objective"))
-        {
-            gameWonScreen.SetActive(true);
-        }
+        crosshair.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
+        transform.LookAt(crosshair);
     }
 }

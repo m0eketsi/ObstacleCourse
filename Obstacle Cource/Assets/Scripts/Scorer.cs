@@ -2,29 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class Scorer : MonoBehaviour
 {
     [SerializeField] private int _hits = 0;
-    public int numberOfObst;
-    private int health;
-    public TextMeshProUGUI healthText;
+    private int score;
+    public TextMeshProUGUI scoreText;
     public GameObject gameOverScreen;
+    public Vector3[] targetLocations;
+    public TextMeshProUGUI countdownText;
+    public float currentTime = 15;
 
     void Update()
     {
-        health = numberOfObst - _hits;
-        healthText.text = "Health: " + health.ToString();
-        if (health <= 0)
-        {
-            gameOverScreen.SetActive(true);
-        }
+        score = _hits;
+        scoreText.text = "Score: " + score.ToString();
+        currentTime -= Time.deltaTime;
+        countdownText.text = currentTime.ToString();
+        StartCoroutine(countdown());
     }
-    private void OnCollisionEnter(Collision other)
+    void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.CompareTag("Obstacle"))
+        if(other.gameObject.CompareTag("Bullet"))
         {
             _hits++;
+            transform.position = targetLocations[Random.Range(0 ,targetLocations.Length)];
+            Destroy(other.gameObject);
         }    
+    }
+    IEnumerator countdown()
+    {
+        yield return new WaitForSeconds(15);
+        PlayerPrefs.SetInt("FinalScore", score);
+        SceneManager.LoadScene(2);
     }
 }

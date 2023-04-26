@@ -5,10 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-    public GameObject startScreen;
-    public GameObject gameOverScreen;
-    public GameObject gameWonScreen;
-    public GameObject player;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,13 +19,10 @@ public class UIManager : MonoBehaviour
     
     public void PlayButtonPressed()
     {
-        startScreen.SetActive(false);
+        SceneManager.LoadScene(1);
     }
     public void HomeButtonPressed()
     {
-        startScreen.SetActive(true);
-        player.transform.position = new Vector3(10, 1, 11.65f);
-        gameOverScreen.SetActive(false);
-        gameWonScreen.SetActive(false);
+        SceneManager.LoadScene(0);
     }
 }

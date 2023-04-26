@@ -8,6 +8,8 @@ TagManager:
   - Hit
   - Objective
   - Obstacle
+  - Bullet
+  - Target
   layers:
   - Default
   - TransparentFX
